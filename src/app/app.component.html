@@ -1,5 +1,8 @@
+<!-- <app-api-integration></app-api-integration> -->
+
+
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<!-- <div style="text-align:center">
   <h1>
     Welcome to {{ title }}!
   </h1>
@@ -17,4 +20,115 @@
     <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
   </li>
 </ul>
+ -->
 
+<table class="table container-fluid table-bordered text-center table-dark table-hover ">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">adressline </th>
+      <th scope="col">City name</th>
+      <th scope="col">State name</th>
+      <th scope="col">Restaurant Name</th>
+      <th scope="col">restaurant</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of apidata ; let i= index">
+      <!-- <th scope="row" >1</th> -->
+      <td>{{i + 1}}</td>
+      <td data-toggle="tooltip" data-placement="right" title="Address">{{item.address_line1}}</td>
+      <td data-toggle="tooltip" data-placement="right" title="City Name">{{item.city_name}}</td>
+      <td data-toggle="tooltip" data-placement="right" title="State Name">{{item.state_name}}</td>
+      <td data-toggle="tooltip" data-placement="right" title="Restaurant Name">{{item.restaurant_name}}</td>
+      <td>
+        <button (click)="editRestaurant(item)" data-bs-toggle="modal" data-bs-target="#examp" class="btn btn-success">
+          Edit
+        </button>
+      </td>
+      
+      <!-- <td>mdo</td> -->
+    </tr>
+    <!-- <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>twitter</td>
+    </tr> -->
+  </tbody>
+  <p>With boundary links:</p>
+</table>
+<div class="justify-content-center d-flex">
+
+  <ngb-pagination [collectionSize]="70" [(page)]="page" [boundaryLinks]="true" ></ngb-pagination>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade modal" id="examp" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change restaurant Details</h5>
+        <button #examp type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+      </div>
+
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body row text-center" style="gap: 22px;">
+          <!-- Restaurant Name Input -->
+          <div class="col-12">
+            <input type="text" formControlName="restaurant_name" class="form-control" placeholder="Enter Restaurant Name" [ngClass]="{'is-invalid': checkoutForm.get('restaurant_name').invalid && checkoutForm.get('restaurant_name').touched}" />
+            <div *ngIf="checkoutForm.get('restaurant_name').touched && checkoutForm.get('restaurant_name').invalid">
+              <small class="text-danger">Restaurant name is required</small>
+            </div>
+          </div>
+      
+          <!-- Address Input -->
+          <div class="col-12">
+            <input type="text" formControlName="address_line1" class="form-control" placeholder="Enter Address" [ngClass]="{'is-invalid': checkoutForm.get('address_line1').invalid && checkoutForm.get('address_line1').touched}" />
+            <div *ngIf="checkoutForm.get('address_line1').touched && checkoutForm.get('address_line1').invalid">
+              <small class="text-danger">Address is required</small>
+            </div>
+          </div>
+
+          <!-- Dropdowns -->
+          <div class="row">
+            <div class="col-6">
+              <select class="form-control" formControlName="state_id" (change)="onchange($event)">
+                <option value="">Select State</option>
+                <option *ngFor="let state of restaurantStates" [value]="state.state_id">{{ state.description }}</option>
+              </select>
+              <div *ngIf="checkoutForm.get('state_id').touched && checkoutForm.get('state_id').invalid">
+                <small class="text-danger">State selection is required</small>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <select class="form-control" formControlName="city_id">
+                <option value="">Select City</option>
+                <option *ngFor="let city of cityname" [value]="city.city_id">{{ city.city_name }}</option>
+              </select>
+              <div *ngIf="checkoutForm.get('city_id').touched && checkoutForm.get('city_id').invalid">
+                <small class="text-danger">City selection is required</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <!-- {{checkoutForm.value | json}} -->
+          <button type="submit" class="btn btn-success" [disabled]="checkoutForm.invalid">Submit</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+ 
